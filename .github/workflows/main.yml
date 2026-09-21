@@ -1,0 +1,30 @@
+name: Blaise V6 RJ - Android CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Inspect repository
+        run: |
+          echo "=== BLAISE V6 RJ ==="
+          find . -maxdepth 3 -type f | sort | head -200
+
+      - name: Check Gradle
+        run: |
+          if [ -f "./gradlew" ]; then
+            chmod +x ./gradlew
+            ./gradlew tasks --no-daemon
+          else
+            echo "GRADLE_NOT_FOUND"
+          fi
+          
